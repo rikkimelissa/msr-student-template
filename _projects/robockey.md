@@ -2,7 +2,7 @@
 layout: project
 title: Project 1
 date: September 22, 2015
-image: http://unsplash.it/400/200?random
+image: yangshuo.jpg
 ---
 
 ## Overview
