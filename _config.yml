@@ -3,7 +3,7 @@ title:              Rikki Irwin Project Portfolio
 email:              rikkiirwin@gmail.com
 description:        "Project portfolio for Rikki Irwin"
 url:                "http://localhost:4000"
-baseurl:            /portfolio
+baseurl:            /msr-student-template
 
 # File structure settings
 image_path:         /public/images
