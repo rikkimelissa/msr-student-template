@@ -12,11 +12,13 @@ This project was part of the course MEAM 410, Design of Mechatronic Systems, at 
 The robots use infrared sensors arranged radially around their bodies to see the puck (which glows with IR light). Position information is derived from a custom mWii sensor capable of detecting a constellation of infrared stars mounted above the rink. On the bottom of the robot is a four bar linkage system which uses a vertically mounted motor to shoot the puck as well as cutouts on the body to drive the puck. Game play consists of the robots working as a team to find the puck and get it into the opposite team's goal.
 
 <p align="center">
-<img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image2 }}" width="750" />
+<img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image2 }}" width="600" />
 </p>
 
+Watch some highlights of our two offensive players attempting to drive the puck into the goal. 
+
 <p align="center">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/cza7N02kB_Q" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/C22qALZhxXI" frameborder="0" allowfullscreen></iframe>
 </p>
 
 

@@ -19,5 +19,9 @@ Rikki worked as a research engineer in the Robotics and Electromechanical System
 
 Previously Rikki interned at Northrgrop Grumman for the Missile Defense Agency in Colorado Springs and worked as a research assistant in GRASP Lab at the University of Pennsyvlania.
 
+## Technology and Skills
+
+Proficient in Matlab, C, C++, Java, Solidworks. Experience with Python, ROS, OpenCV, Linux and Windows environments.
+
 
 
