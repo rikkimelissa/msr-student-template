@@ -17,7 +17,7 @@ Rikki worked as a research engineer in the Robotics and Electromechanical System
 * <u>IED-Defeat:</u> Created path-planning behaviors for area exploration including waypoint following behavior and complete coverage behavior for mobile robot. Developed drivers for motor control for dual arm addition. Researched various sensors for use in autonomous robot navigation during IED detection. Integrated GPS, IMU, LIDAR, stereo camera, and GEM-3MA mine detection sensor to enable advanced robot behaviors. 
 * <u>ATS-OCU:</u> Developed control algorithms for operating a mobile robot with a 2 DOF manipulator. Used inverse kinematics and specialized controls to enable robot to use its arm to climb over obstacles. Implemented controls on an Xbox controller for operator ease of use with scalable autonomy.
 
-Previously Rikki interned at Northrgrop Grumman for the Missile Defense Agency in Colorado Springs and worked as a research assistant in GRASP Lab at the University of Pennsyvlania.
+Previously Rikki interned at Northrop Grumman for the Missile Defense Agency in Colorado Springs and worked as a research assistant in GRASP Lab at the University of Pennsyvlania.
 
 ## Technology and Skills
 
