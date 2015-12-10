@@ -2,7 +2,7 @@
 layout: about
 path: /about
 url: index.html
-image: profile_photo.jpg
+image: rikki_baxter.png
 ---
 
 ## Education
