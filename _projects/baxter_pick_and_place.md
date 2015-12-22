@@ -20,7 +20,7 @@ We split the task into four main parts which are implemented through a state mac
 All of the code for this project is hosted on [this page](https://github.com/rikkimelissa/baxter_pick_and_place).
 
 <p align="center">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/2zeHAIu3mbY" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/H4gZ741p81o" frameborder="0" allowfullscreen></iframe>
 </p>
 
 
