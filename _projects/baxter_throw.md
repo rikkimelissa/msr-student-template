@@ -1,7 +1,7 @@
 ---
 layout: project
 title: Kinodynamic Trajectories
-date: December 10, 2015
+date: March 15, 2016
 image: rrt_bidir_controls.png
 ---
 
