@@ -6,7 +6,7 @@ image: rrt_bidir_controls.png
 ---
 
 ## Overview
-The main goal of this project was to generate kindynamic trajectories using an RRT to release a ball so it would land at a desired location. This was a semester-long project at Northwestern University. The task is split into 5 main components: 
+The main goal of this project was to generate kinodynamic trajectories using an RRT to release a ball so it would land at a desired location. This was a semester-long project at Northwestern University. The task is split into 5 main components: 
 
 <l>
 <li>  Sample a release state position, velocity, and angle that will land the ball at a desired position using projectile motion equations </li>
@@ -19,7 +19,7 @@ The main goal of this project was to generate kindynamic trajectories using an R
 All of the code for this project is hosted on [this page](https://github.com/rikkimelissa/baxter_throw).
 
 <p align="center">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/rpvsrdLKdGM" frameborder="0" allowfullscreen></iframe>
+<iframe width="560" height="315" src="https://www.youtube.com/embed/ygJIfao9ul8" frameborder="0" allowfullscreen></iframe>
 </p>
 
 This implementation relies on work from the following sources:
@@ -61,7 +61,7 @@ When extended to 14-DOF, the RRT results in paths like the one below which shows
 Once a path has been found that connects the start and release states with a dynamically feasible trajectory, collisions are checked for each point along the path. The planner is lazy in that the path is found prior to collision checking as collision checking tends to be the most computationally intensive constraint to check. Collision checking uses the built in service from MoveIt!.
 
 #### Path smoothing <a name="drop"></a>
-This tasks employs a shortcutting method to smooth jerky trajectories for high DOF manipulators subject to collision constraints, velocity bounds, and acceleration bounds. This algorithm first converts the path to a trajectory over time using a 5th order spline that respects state conditions and velocity and acceleration limits. The shortcutting algorithm is then employed over 30 iterations: for each iteration, two random states are picked from the trajectory. The minimum execution time is determined by the slowest single-joint trajetory using the fastest dynamically feasible trajectory between joint states. Once this time has been determined, the rest of the joints are interpolated for this time using the minimum-acceleration interpolant. This new segment replaces the old segment only if the overall time for execution has been reduced.
+This tasks employs a shortcutting method to smooth jerky trajectories for high DOF manipulators subject to collision constraints, velocity bounds, and acceleration bounds. This algorithm first converts the path to a trajectory over time using a 5th order spline that respects state conditions and velocity and acceleration limits. The shortcutting algorithm is then employed over 30 iterations: for each iteration, two random states are picked from the trajectory. The minimum execution time is determined by the slowest single-joint trajectory using the fastest dynamically feasible trajectory between joint states. Once this time has been determined, the rest of the joints are interpolated for this time using the minimum-acceleration interpolant. This new segment replaces the old segment only if the overall time for execution has been reduced.
 
 Below is an example of the shortcutting method over 30 iterations. It smooths the path and reduces the overall time.
 
@@ -75,7 +75,7 @@ Below is an example of the shortcutting method over 30 iterations. It smooths th
 * `path_smooth.py` converts a path into a timed trajectory and smooths the path with shortcuts
 * `release_state_sample` samples release states for projectile motion
 * `release_state_solve` checks release states using IK and velocity bounds
-* `rrt_joint.py` uses a kinodynamic RRT to calculate a path for start position to release position
+* `rrt_joint.py` uses a kinodynamic RRT to calculate a path from start position to release position
 * `throw_path.py` sends a path to the joint trajectory action server for execution
 
 #### Dependencies <a name="Requirements"></a>
@@ -87,4 +87,4 @@ Below is an example of the shortcutting method over 30 iterations. It smooths th
 
 #### Instructions for running files  <a name="Instructions"></a>
 
-To run the files, the workspace must be connected to Baxter and properly sourced. Then use the following command: `roslaunch baxter_throw throw_demo.launch`
+To run the files, the workspace must be connected to Baxter and properly sourced. Then use the following command: `roslaunch baxter_throw throw_demo.launch`. In the input_state window, enter 1, 2, or 3 to move the box to one of three set positions which Baxter will throw to.
