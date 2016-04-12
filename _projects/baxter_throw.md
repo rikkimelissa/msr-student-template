@@ -18,8 +18,16 @@ The main goal of this project was to generate kinodynamic trajectories using an 
 
 All of the code for this project is hosted on [this page](https://github.com/rikkimelissa/baxter_throw).
 
+See a demo of the robot throwing a ball to three distinct positions here:
+
 <p align="center">
 <iframe width="560" height="315" src="https://www.youtube.com/embed/ygJIfao9ul8" frameborder="0" allowfullscreen></iframe>
+</p>
+
+See another demo of the robot throwing the ball from flexible starting positions:
+
+<p align="center">
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1N4T0F9NE4U" frameborder="0" allowfullscreen></iframe>
 </p>
 
 This implementation relies on work from the following sources:
@@ -68,6 +76,10 @@ Below is an example of the shortcutting method over 30 iterations. It smooths th
 <p align="center">
 <img src="https://raw.githubusercontent.com/rikkimelissa/baxter_throw/master/src/images/final_progression3.png" width="600" />
 </p>
+
+#### Performance
+
+From the nominal starting position, the throwing accuracy is about 8 out of 10. From a flexible starting position, the accuracy is much worse. The inconsistency is a problem beyond the scope of this project, as there is no clear relationship between the path and the time of the release, and this is the largest perceived source of error. An effort is being made to use machine learning algorithms to figure out which starting conditions and path correspond to the highest accuracy.
 
 #### Important nodes <a name="nodes"></a>
 * `check_rrt_joint.py` iterates through RRT and path smoothing and sends results to the collision checker
