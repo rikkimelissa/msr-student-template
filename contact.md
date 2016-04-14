@@ -2,7 +2,7 @@
 layout: contact
 path: /contact
 url: index.html
-image: profile_photo.jpg
+image: profile_photo2.jpg
 ---
 
 ## Rikki Irwin
