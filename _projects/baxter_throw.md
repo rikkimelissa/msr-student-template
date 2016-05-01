@@ -3,6 +3,7 @@ layout: project
 title: Kinodynamic Trajectories
 date: March 15, 2016
 image: rrt_bidir_controls.png
+permalink: "kinodynamic-trajectories.html"
 ---
 
 ## Overview

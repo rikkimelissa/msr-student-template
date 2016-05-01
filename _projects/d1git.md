@@ -13,7 +13,7 @@ image8: d8.png
 image9: d9.png
 image10: d10.png
 image11: d11.png
-
+permalink: "d1git.html"
 ---
 
 ## Overview

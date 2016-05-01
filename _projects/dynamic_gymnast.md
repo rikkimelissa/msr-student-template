@@ -3,6 +3,7 @@ layout: project
 title: Dynamic Gymnast
 date: December 3, 2015
 image: gymnast.png
+permalink: "dynamic-gymnast.html"
 ---
 
 ## Overview

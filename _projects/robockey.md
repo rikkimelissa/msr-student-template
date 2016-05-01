@@ -4,6 +4,7 @@ title: Robockey
 date: December 11, 2011
 image: robockey2.jpg
 image2: robockey1.jpg
+permalink: "robockey.html"
 ---
 
 ## Overview

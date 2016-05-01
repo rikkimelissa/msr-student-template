@@ -3,6 +3,7 @@ layout: project
 title: Baxter Pick and Place
 date: December 10, 2015
 image: baxter_pick.png
+permalink: "pick-and-place.html"
 ---
 
 ## Overview

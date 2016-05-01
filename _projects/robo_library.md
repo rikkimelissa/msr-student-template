@@ -3,6 +3,7 @@ layout: project
 title: Robotics Library			
 date: December 3, 2015
 image: ur5.png
+permalink: "robo-library.html"
 ---
 
 ## Overview

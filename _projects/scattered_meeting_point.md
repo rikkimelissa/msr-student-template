@@ -8,6 +8,7 @@ image2: sp2.png
 image3: p31.png
 image4: p14.png
 image5: p32.png
+permalink: "scattered-meeting-point.html"
 ---
 
 ## Overview
