@@ -2,7 +2,7 @@
 layout: project
 title: Improving Baxter Robot Catch Success with Neural Nets
 date: June 6, 2016
-image: neural_nets.png
+image: d2.png
 permalink: "neural-net-catching.html"
 ---
 
