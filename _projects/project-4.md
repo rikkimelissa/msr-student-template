@@ -1,41 +1,72 @@
 ---
 layout: project
-title: Weighted Terrain Meeting Point
-date: November 20, 2015
-image: p11.png
-image1: p12.png
-image2: sp2.png
-image3: p31.png
-image4: p14.png
-image5: p32.png
-permalink: "scattered-meeting-point.html"
+title: Improving Baxter Robot Catch Success with Neural Nets
+date: June 6, 2016
+image: neural_nets.png
+permalink: "neural-net-catching.html"
 ---
 
+Team: Claire Melvin (melvinclaire@gmail.com), Minghe Jiang (minghej@u.northwestern.edu) and Rikki Irwin (rikkiirwin@gmail.com)
+
 ## Overview
-This project was part of the course EECS 495, Computational Geometry, at Northwestern University. The goal of the project was to implement an algorithm to calculate the meeting point of scattered robots on weighted terrain surfaces, based on the algorithm detailed in [this paper](http://people.scs.carleton.ca/~lanthier/personal/cv/CATS2005_8.5x11.pdf) by Mark Lanthier, Doron Nussbaum, and Tsuo-Jung Wang. 
+The goal of this project was to predict the success of a robot throwing task based on features of the throw such as release state and throw path. This project was for the class EECS 349: Machine Learning at Northwestern University. Data collection, feature selection, algorithm testing and algorithm tuning were all worked on by all members of the team.
 
-The algorithm consists of three main parts:
-<l>
-<li> Calculating the Delaunay triangulation for a set of points in 3D space.</li>
-<li> Constructing a graph of Steiner points and edges at ten per edge of the original triangulation.</li>
-<li> Invoking a shortest path algorithm from each of the source vertices on which the robots are positioned. The algorithm is modified as a multiple-source single-target variation such that the algorithm stops at some vertex which is the approximating meeting point.</li>
-</l>
 
-All of the code for this project is hosted on [this page](https://github.com/rikkimelissa/scattered-robots-meeting-point).
+Our task is to predict the success of a robot throwing task (seen in video below) based on features of the throw such as release state and throw path. A fundamental task in robotics is to design feasible trajectories that determine control inputs to drive a robot from an initial configuration and velocity to a goal configuration and velocity while obeying physically-based dynamic models and avoiding obstacles in the robot’s environment. Such a trajectory planner has been implemented by our teammate Rikki, but the success rate of the current algorithm is about 80%. The failures are unexpected, and there is no clear correlation between the robot joint paths and success or failure. Through this machine learning task the success of the trajectory planner can be improved by discovering which features are important and how they affect the success of the throw. 
 
-The triangulation of a sample terrain:
 <p align="center">
-<img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image2 }}" width="600" />
+<iframe width="560" height="315" src="https://www.youtube.com/embed/1N4T0F9NE4U" frameborder="0" allowfullscreen></iframe>
 </p>
 
-Two examples of found meeting points for robots starting at random vertices. The contour map is shown with the start locations of each robot displayed as a circle of the robot's color, each robot's path in a different color, and the calculated meeting point shown as a black circle.
+Using a multilayer perceptron and features describing the max velocity and position of each joint of the robot, we found an algorithm which increased our training accuracy by 7.41%. 
+
+The data acquisition for this task was simplified by a script that calculated all parameters and path variables and recorded the relevant features. After a throw was executed, the operator would record catch success. Each trial took approximately 30 seconds to run. The goal was to accurately predict whether a throw achieved catch success. 
+
+Our solution performed better than expected. Our aim was to achieve 85% accuracy in implementation. Key findings showed that features relating to the robot’s physical limits had a high correlation with catch success, and by focusing on these features we were able to increase our overall accuracy. Upon testing multiple algorithms (clustering, Bayes nets, and neural networks), we found that multilayer perceptrons performed with higher accuracy than the other two. With a pruned feature set and after tuning the neural net, we achieved 85.71% accuracy on the training set through 10-fold cross validation. With this same model we achieved 87.5% accuracy on the set-aside test data, thereby exceeding our goal.
+
 <p align="center">
-<img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image1 }}" width="300" />
-<img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image3 }}" width="370" />
+<em>Training and testing accuracy with varying model parameters</em>
 </p>
 <p align="center">
-<img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image4 }}" width="370" />
-<img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image5 }}" width="370" />
+<img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image }}" width="500" />
 </p>
 
 
+### Data 
+In previous work, our teammate Rikki [developed an algorithm](http://rikkimelissa.github.io/portfolio/kinodynamic-trajectories.html) to generate the throwing path. For this task, we expanded on the implementation to extract relevant features by calculating and recording information about the release point and the path that is taken to get there. The release point is specified by four variables: the lateral position and velocity and the vertical position and velocity. We transform these measures into joint space of the robot’s arm using the Jacobian transformation to give position and velocity of the seven arm joints. We also extract features about the path taken during the throw, from the fixed starting position to the calculated release position. We look at execution time and number of discrete steps in the path. We also look at the following metrics for each joint: maximum angle, minimum angle, absolute maximum velocity, absolute maximum acceleration, and distance from joint and velocity boundaries. In total we are evaluating 69 features.
+
+We collected 606 samples of throwing data (features and catch success status). We partitioned the data into 406 samples for training and 200 samples for testing. We did not explicitly designate a validation set as we used 10-fold cross validation to evaluate our algorithms.
+
+### Methods
+The steps we applied for achieving a high accuracy machine learning algorithm were: 
+<ol>
+<li>Determining appropriate algorithms</li>
+<li>Evaluating features by domain knowledge</li>
+<li>Evaluating features by statistical correlation</li>
+<li>Tuning parameters</li>
+</ol>
+In all of our analysis we used WEKA to implement the algorithms.
+
+<u>Determining appropriate algorithms:</u> In this step, we determined algorithms which would likely perform well with our dataset using information we learned from lectures. We created models to test our data set using clustering, regression, bayes nets, and neural nets. We evaluated these models on accuracy, training time, true and false positive rates, and precision. The neural net model outperformed the other models in every regard besides training time, so we chose this model to further analyze.
+
+<u>Evaluating features by domain knowledge:</u> In this step, we eliminated features that did not provide information to the learning task based on domain knowledge. By visually examining each feature versus catch success, we eliminated 29 features from the dataset wherein the vast majority of samples fell within a very narrow range except for a few outliers. For example, the data for Joint 1’s position minimum fell within -.225 and -.223 radians for 476 samples out of 506; we therefore eliminated this feature and others like this because they did not contribute any new information to the classification task. When these values are too similar, the data is not linearly separable and these features were of little beneficial use for many of the classification algorithms. 
+
+<u>Evaluating features by statistical correlation:</u> In this step, we methodically eliminated unimportant features using feature correlation tests. We tested in three ways: first, by testing one feature at a time and measuring root relative squared error. Second, by removing one feature at a time and measuring accuracy. Third, by splitting the features into groups of similar information and testing the accuracy of one group at a time.
+
+<u>Tuning parameters:</u> In this step, we used the information from our statistical correlation tests to tune parameters and find the best performing algorithms. We tested and tuned three sets of data: first, all features with a root relative squared error less than 100%. Second, by eliminating features whose removal caused an overall increase in accuracy in our statistical correlation tests. Third, by using only features from groups whose accuracy was higher than the initial accuracy. This third group consisted only of position and velocity maximum values for each joint and with no tuning gave an accuracy of 84.48%. After tuning the model parameters, it reached an accuracy of 85.71%.
+
+<p align="center">
+<em>Visualization of multilayer perceptron model</em>
+</p>
+<p align="center">
+<img src="https://s3.amazonaws.com/f.cl.ly/items/2x0h450v0L3T0o0M1M1w/Screen%20Shot%202016-06-04%20at%2013.31.06.png?v=862e4dd9" width="700" />
+</p>
+
+### Results    
+By evaluating the features using domain knowledge and statistical correlation, we were able to discover that the features with the highest influence on catch success were related to the robot's physical limits. In our third group, the feature groups whose accuracy performed the best consisted of position and velocity maximum values for the robot's joints, a hardware limit on the robot. Using only these features, we found a model with 84.48% accuracy with no tuning. After tuning the model parameters, it reached an accuracy of 85.71% on the training data with 10-fold cross validation. On the previously untouched testing data, we achieved an accuracy of 87.5%, outperforming both our goal and our expectation.
+
+
+### Analysis
+The two main contributors to our achieved accuracy were algorithm selection and feature selection. Initially we expected a clustering algorithm to work very well, as we thought the data might fall into distinct classification groups for certain features. We also though certain configurations might have a higher prior likelihood of success, which could be exploiting through Bayes Nets. In practice, neither of these algorithms worked well at all. Only a multilayer perceptron neural net was able to map this high dimension, nonlinear data set in a way that was able to distinguish the different classes. Within the neural net algorithm, we were able to determine which features contributed most to accuracy and correlated the best with the classification. Pruning the dataset by removing unnecessary features was the key step in improving our accuracy. 
+
+In the future, the neural net model would be implemented in the control algorithm for the robot throwing task. After calculation of the release point and path, the features would be extracted and testing using the neural net model for catch success. If the catch is not predicted to be successful, the robot would calculate a new path. In addition, this project treated the task as binary classification. Ideally, the robot should be able to accurately throw to any specified height and distance. This regression problem was beyond the scope of this task, but would be an enlightening experiment to better understand the uncertainty in the throwing task.

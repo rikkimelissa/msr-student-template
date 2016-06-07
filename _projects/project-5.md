@@ -1,27 +1,41 @@
 ---
 layout: project
-title: Baxter Pick and Place
-date: December 10, 2015
-image: baxter_pick.png
-permalink: "pick-and-place.html"
+title: Weighted Terrain Meeting Point
+date: November 20, 2015
+image: p11.png
+image1: p12.png
+image2: sp2.png
+image3: p31.png
+image4: p14.png
+image5: p32.png
+permalink: "scattered-meeting-point.html"
 ---
 
 ## Overview
-This project was part of the course ME 495, Embedded Systems in Robotics, at Northwestern University. The main goal of this project was to use the Baxter robot to autonomously pick objects off of a work surface and place them in a container. The blocks can be placed at any position and orientation on the table, and they are also sorted by tag number into two groups.
+This project was part of the course EECS 495, Computational Geometry, at Northwestern University. The goal of the project was to implement an algorithm to calculate the meeting point of scattered robots on weighted terrain surfaces, based on the algorithm detailed in [this paper](http://people.scs.carleton.ca/~lanthier/personal/cv/CATS2005_8.5x11.pdf) by Mark Lanthier, Doron Nussbaum, and Tsuo-Jung Wang. 
 
-We split the task into four main parts which are implemented through a state machine:
-
+The algorithm consists of three main parts:
 <l>
-<li> Locating a block with tags using ar_track_alvar</li>
-<li> Moving to above the block position using a joint trajectory</li>
-<li> Adjusting the height using a Cartesian trajectory</li>
-<li> Grabbing the block and dropping it in a specified position</li>
+<li> Calculating the Delaunay triangulation for a set of points in 3D space.</li>
+<li> Constructing a graph of Steiner points and edges at ten per edge of the original triangulation.</li>
+<li> Invoking a shortest path algorithm from each of the source vertices on which the robots are positioned. The algorithm is modified as a multiple-source single-target variation such that the algorithm stops at some vertex which is the approximating meeting point.</li>
 </l>
 
-All of the code for this project is hosted on [this page](https://github.com/rikkimelissa/baxter_pick_and_place).
+All of the code for this project is hosted on [this page](https://github.com/rikkimelissa/scattered-robots-meeting-point).
 
+The triangulation of a sample terrain:
 <p align="center">
-<iframe width="560" height="315" src="https://www.youtube.com/embed/H4gZ741p81o" frameborder="0" allowfullscreen></iframe>
+<img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image2 }}" width="600" />
+</p>
+
+Two examples of found meeting points for robots starting at random vertices. The contour map is shown with the start locations of each robot displayed as a circle of the robot's color, each robot's path in a different color, and the calculated meeting point shown as a black circle.
+<p align="center">
+<img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image1 }}" width="300" />
+<img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image3 }}" width="370" />
+</p>
+<p align="center">
+<img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image4 }}" width="370" />
+<img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image5 }}" width="370" />
 </p>
 
 
