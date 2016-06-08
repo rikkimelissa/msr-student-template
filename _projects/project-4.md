@@ -18,7 +18,7 @@ Our task is to predict the success of a robot throwing task (seen in video below
 <iframe width="560" height="315" src="https://www.youtube.com/embed/1N4T0F9NE4U" frameborder="0" allowfullscreen></iframe>
 </p>
 
-The data for this task was collected by running 606 throw trials, each of which took approximately 30 seconds to run. At each trial, the relevant parameters and path variables were automatically extracted and recorded as sample features. The operator was prompted to input throw sucess. Features consisted of measures of the throw path, like maximum joint velocity over the throw, and measures of the desired throw position, like lateral position. This dataset was then used to predict whether a throw achieved catch success. 
+The data for this task was collected by running 606 throw trials, each of which took approximately 30 seconds to run. At each trial, the relevant parameters and path variables were automatically extracted and recorded as sample features. The operator was prompted to input throw success. Features consisted of measures of the throw path, like maximum joint velocity over the throw, and measures of the desired throw position, like lateral position. This dataset was then used to predict whether a throw achieved catch success. 
 
 Upon testing multiple algorithms (clustering, Bayes nets, regrssion, and neural networks), we found that multilayer perceptrons performed with the highest accuracy. We examined feature contribution to find that features describing the maximum velocity and position of each joint of the robot contributed the most to the model's success.
 
