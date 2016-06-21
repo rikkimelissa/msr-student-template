@@ -25,7 +25,7 @@ Upon testing multiple algorithms (clustering, Bayes nets, regrssion, and neural 
 Our machine learning solution performed better than expected. Our aim was to achieve 85% classification accuracy upon implementation on an algorithm. Key findings showed that features relating to the robot’s physical limits had a high correlation with catch success, and by focusing on these features we were able to increase our overall accuracy.  With a pruned feature set and tuned parameters in the neural network, we achieved 85.71% classification accuracy on the training set through 10-fold cross validation. With this same model we achieved 87.5% classification accuracy on the set-aside test data. By applying this classification algorithm to a calculated throw path before the throw is executed, the final algorithm increases our overall throw success rate from 80% to 96.55% (greater than 75% error reduction in missed throws).
 
 <p align="center">
-<em>Training and testing accuracy with varying model parameters</em>
+<em>Visualization of multilayer perceptron model</em>
 </p>
 <p align="center">
 <img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image }}" width="500" />
@@ -60,7 +60,7 @@ In all of our analysis we used WEKA to implement the algorithms.
 <u>Tuning parameters:</u> In this step, we used the information from our statistical correlation tests to tune parameters and find the best performing algorithms. We tested and tuned three sets of data: first, all features with a root relative squared error less than 100%. Second, by eliminating features whose removal caused an overall increase in accuracy in our statistical correlation tests. Third, by using only features from groups whose accuracy was higher than the initial accuracy. This third group consisted only of position and velocity maximum values for each joint and with no tuning gave an accuracy of 84.48%. After tuning the model parameters, it reached an accuracy of 85.71%.
 
 <p align="center">
-<em>Visualization of multilayer perceptron model</em>
+<em>Training and testing accuracy with varying model parameters</em>
 </p>
 <p align="center">
 <img src="https://s3.amazonaws.com/f.cl.ly/items/2x0h450v0L3T0o0M1M1w/Screen%20Shot%202016-06-04%20at%2013.31.06.png?v=862e4dd9" width="700" />
