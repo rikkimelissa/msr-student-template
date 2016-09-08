@@ -16,15 +16,14 @@ This project was part of the course ME 454, Optimal Control of Nonlinear Systems
 
 ### Dynamics
 We formulated the dynamics using the Lagrangian of the system and the Euler-Lagrange equation. Our state consisted only of the angle with respect to the center of the bowl and the angular velocity with respect to the center of the bowl. We did not consider movement outside of the plane. 
-<p align="center">
-<img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image2 }}" width="600" />
-</p>
+
+$$ L = -g*m*(R_{sphere} - cos(\theta(t))*(R_{sphere} - r_{ball})) + \frac{inertia*R_{sphere}^2*\omega(t)^2}{2*r_{ball}^2} + \frac{1}{2} m*R_{sphere}^2*\omega(t)^2 $$
+
 The three terms represent potential energy due to the changing height and kinetic energy due to linear velocity and rotational velocity.
 
 The Euler Lagrange equation and dynamics were then as follows:
-<p align="center">
-<img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image3 }}" width="600" />
-</p>
+
+$$ \dot \omega (t) = \frac{g*m*sin(\theta (t))*r_{ball}^2*(r_{ball} - R_{sphere})}{(inertia+m*r_{ball}^2)*R_{sphere}^2} $$
 
 We estimated values for the radii and inertia, and attempted to find a straight line trajectory for the ball using the iLQR method. We also changed the ratio of the input acceleration term to the system acceleration term to accommodate the dynamics. While we could run the algorithm for a couple of iterations, we were never able to achieve reasonable tracking with these dynamics. We therefore simplified the system to only include the linear velocity term, reasoning that we could scale the results. 
 

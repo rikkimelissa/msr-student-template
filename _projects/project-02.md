@@ -19,18 +19,27 @@ permalink: "system-id.html"
 ---
 
 ## Overview
-The Neurobionics Lab at the Rehabilitation Institute of Chicago aims to advance human mobility through an improved understanding of how the brain controls joint dynamics during tasks such as locomotion. The goal of this project was to identify system parameters of joint dynamics in real time, with the intent to translate this identification into control principles for wearable robotic systems. With a position input and a torque output, deconvolution is performed to the input-output cross correlation and the input autocorrelation to find the system impulse response. A second order system is fit to this response in the frequency domain, and variance accounted for (VAF) is used as a measure of correctness. VAF was explored for varying levels of noise, window length, and changing system dynamics.
+The Neurobionics Lab at the Rehabilitation Institute of Chicago aims to advance human mobility through an improved understanding of how the brain controls joint dynamics during tasks such as locomotion. The goal of this project was to identify system parameters of joint dynamics in real time, with the aim to study how people control the dynamics of their joints during tasks. Understanding how people control their movement will improve wearable robotic technologies by incorporating how people naturally move and interact with their environment.
+
+We quantify neuromuscular control of ankle dynamics by estimating parameters of an equivalent mechanical system, namely inertia, stiffness, and damping. These parameters define how the system torque output will relate to the position input and describe a linear, time-varying, second-order system. This project explores the limits of real-time parameter identification using system identification techniques in signal processing and optimization on a Simulink model of the system. Identification is analyzed for how well the estimated parameters match the actual parameters and how well the estimated system explains the behavior of the actual system. Results are promising for identification in .3 seconds for a signal with up to 10% added noise, even if system parameters change up to 150% over the course of identification.
 
 This implementation relies on work from the following sources:
 
-> Zhang, Yajia, Jingru Luo, and Kris Hauser. "Sampling-based motion planning with dynamic intermediate state objectives: Application to throwing." Robotics and Automation (ICRA), 2012 IEEE International Conference on. IEEE, 2012.
+> Silvia, Manuel T., and Enders A. Robinson. 1978. Deconvolution of geophysical time series in the
+exploration for oil and natural gas. Amsterdam: Elsevier Scientific Pub. Co.
 
-> S. M. LaValle and J. J. Kuffner. "Randomized kinodynamic planning". Proc. IEEE Int’l Conf. on
-Robotics and Automation, 1999.
+> Keesman, Karel J. System identification: an introduction. Springer Science & Business Media, 2011.
 
-> Hauser, Kris, and Victor Ng-Thow-Hing. "Fast smoothing of manipulator trajectories using optimal bounded-acceleration shortcuts." Robotics and Automation (ICRA), 2010 IEEE International Conference on. IEEE, 2010.
+> Kearney, Robert E., and Ian W. Hunter. "System identification of human joint dynamics." Critical
+reviews in biomedical engineering 18, no. 1 (1989): 55-87.
 
-> Sánchez, Gildardo, and Jean-Claude Latombe. "On delaying collision checking in PRM planning: Application to multi-robot coordination." The International Journal of Robotics Research 21.1 (2002): 5-26.
+> Mooney, Luke M., Stephanie L. Ku, Madeleine Abromowitz, Jacob A. Mooney, Xu Sun, and Qifang
+Bao. "Measuring muscle stiffness by linear mechanical perturbation." In 2015 IEEE 12th International
+Conference on Wearable and Implantable Body Sensor Networks (BSN), pp. 1-5. IEEE, 2015.
+
+#### Introduction
+
+With a position input and a torque output, deconvolution is performed to the input-output cross correlation and the input autocorrelation to find the system impulse response. A second order system is fit to this response in the frequency domain, and variance accounted for (VAF) is used as a measure of correctness. VAF was explored for varying levels of noise, window length, and changing system dynamics.
 
 #### Simulink model
 In the following analysis, a Simulink model of a linear time-varying second order system was used to model joint impedance and analyze the effect of various parameters on identification. 
@@ -39,18 +48,19 @@ In the following analysis, a Simulink model of a linear time-varying second orde
 <img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image2 }}" width="700" />
 </p>
 
+
 The bulk of the signal blocks in the diagram model an LTV second order mass spring damper system and its equivalent transfer function:
 
-<p align="center">
-<img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image3 }}" width="170" />
-</p>
+$$ m*\ddot x + b*\dot x + k*x = u $$
+
+$$ \frac{1}{I*s^2 + B*s + K} $$
 
 where I is inertia, B is damping, and K is stiffness (inertia is used instead of mass). K varies according to a sine wave of which the amplitude, frequency, and bias can be set. The transfer function block models the same system with no varying parameters for model correctness verification.
 
 #### Input
 The reliability of the estimate of joint dynamics depends on the relative magnitudes of the input signal and noise. The best practice is for the input waveform to contain significant power over the range of frequencies for which the system is expected to respond. In this analysis, two input waveforms were tested: pseudo-random binary sequence (PRBS) and filtered Gaussian white noise distribution. 
 
-PRBS is generated by the equation u(t) = u(t-1)*sign(w(t) – p0) , where u is the input, w(t) is a computer-generated white noise process, and p0 is the switching probability of value 0.5 in this analysis.
+PRBS is generated by the equation $$ u(t) = u(t-1)*sign(w(t) – p0) $$, where u is the input, w(t) is a computer-generated white noise process, and p0 is the switching probability of value 0.5 in this analysis.
 
 Gaussian white noise input is created with the matlab command randn, which generates a zero-mean normal distribution of random numbers. This input is then low-pass filtered at 200Hz to remove high frequency information.
 
@@ -66,7 +76,7 @@ While the ultimate analysis used a continuous input, using pulses of input to th
 While the method of input pulses is more mathematically sound in terms of complete information for deconvolution, the short segments were ultimately not as capable of handling noise as longer windows of continuous input despite their lack of complete response. Therefore we do not pursue pulse input further.
 
 #### Deconvolution
-While the impulse response of a perfect system can be found by sequentially solving for the relationship between the input and output data, in practice the presence of any noise completely distorts this solution. An alternative method is to use the auto- and cross-correlations to reconstruct the unit-impulse response using the Wiener-Hopf equation r<sub>uy</sub>(l) = Σ<sub>k=0:∞</sub> g(k) * r<sub>uu</sub>(l-k), where r<sub>uy</sub> is the cross-correlation between the input and output data, r<sub>uu</sub> is the auto-correlation of the input data, g(k) is the impulse response we are looking for, and l is the lag. These correlations reduce the impact of noise since noise is uncorrelated with itself. Substituting the input and output data values into the Wiener-Hopf equation for a certain duration of time and rewriting the results in matrix form gives an equation where the cross-correlation is equivalent to the Toeplitz matrix of the auto-correlation multiplied by the impulse response. If the matrix is invertible, the impulse response can be directly found. A faster method than matrix inversion exploits the symmetric properties of the Toeplitz matrix in Toeplitz recursion, developed by Wiggins and Robinson in 1965 (referred to as the EUREKA method by Silvia and Robinson). This scheme solves for filter coefficients (in this case the impulse response) using the prediction-error variance and is faster than matrix inversion for the array lengths we are looking for. The table below shows the time taken to solve for impulse response using the two methods as a function of various array lengths. The time shown is the average of 10 trials. We are using arrays lengths of 300 – 1500, so the Eureka method is much faster.
+While the impulse response of a perfect system can be found by sequentially solving for the relationship between the input and output data, in practice the presence of any noise completely distorts this solution. An alternative method is to use the auto- and cross-correlations to reconstruct the unit-impulse response using the Wiener-Hopf equation $$ r_{uy}(l) = \sum_{k=0}^\infty g(k) * r_{uu}(l-k) $$ where r<sub>uy</sub> is the cross-correlation between the input and output data, r<sub>uu</sub> is the auto-correlation of the input data, g(k) is the impulse response we are looking for, and l is the lag. These correlations reduce the impact of noise since noise is uncorrelated with itself. Substituting the input and output data values into the Wiener-Hopf equation for a certain duration of time and rewriting the results in matrix form gives an equation where the cross-correlation is equivalent to the Toeplitz matrix of the auto-correlation multiplied by the impulse response. If the matrix is invertible, the impulse response can be directly found. A faster method than matrix inversion exploits the symmetric properties of the Toeplitz matrix in Toeplitz recursion, developed by Wiggins and Robinson in 1965 (referred to as the EUREKA method by Silvia and Robinson). This scheme solves for filter coefficients (in this case the impulse response) using the prediction-error variance and is faster than matrix inversion for the array lengths we are looking for. The table below shows the time taken to solve for impulse response using the two methods as a function of various array lengths. The time shown is the average of 10 trials. We are using arrays lengths of 300 – 1500, so the Eureka method is much faster.
 
 <table border="1" style="width:80%" align="center">
   <tr>
@@ -163,3 +173,7 @@ The results over the length of the data are shown below, with the top three plot
 <p align="center">
 <img src="{{site.baseurl}}/{{site.image_path}}/{{ page.image13 }}" width="600" />
 </p>
+
+#### Conclusion
+
+This project explored the limits of real-time system identification. It has shown that parameter estimation is possible with less than 10% error for a window length of .3 seconds or greater with up to 10% signal to noise ratio. Variance accounted for remains above 90% until approximately 6% signal to noise ratio with up to a 150% change in impedance. These results are promising for understanding how people control the stiffness of their ankles during tasks. In the future, these results can be extended to experimental data and used to parameterize ankle impedance in real time.
